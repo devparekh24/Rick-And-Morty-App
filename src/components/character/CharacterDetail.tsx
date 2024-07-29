@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import { Container, Typography, Card, CardContent, CardMedia, Grid } from '@mui/material';
 import { useGetCharacterByIdQuery } from '../../services/characterApi';
 import { Episode } from '../../utils/interfaces/episodeInterface';
-import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationSkeletonCard';
-import CharacterDetailsSkeletonCard from '../skeleton/CharacterDetailsSkeletonCard';
+import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationCard/EpisodeAndLocationSkeletonCard';
+import CharacterDetailsSkeletonCard from '../skeleton/CharacterDetailsCard/CharacterDetailsSkeletonCard';
 
 const CharacterDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -49,10 +49,10 @@ const CharacterDetail: React.FC = () => {
     }, [getCharacterDataById, getEpisodes]);
 
     if (isLoading || showSkeleton) {
-        return <CharacterDetailsSkeletonCard />;
+        return <CharacterDetailsSkeletonCard data-testid="character-details-skeleton" />;
     }
 
-    if (error) {
+    if (isError || error) {
         return <Typography variant="h6" color="error">Failed to load character data.</Typography>;
     }
 
@@ -107,7 +107,7 @@ const CharacterDetail: React.FC = () => {
                 {showSkeleton
                     ? Array.from(new Array(20)).map((_, index) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                            <EpisodeAndLocationSkeletonCard />
+                            <EpisodeAndLocationSkeletonCard data-testid="episode-skeleton" />
                         </Grid>
                     ))
                     : episodes.map((episode) => (
