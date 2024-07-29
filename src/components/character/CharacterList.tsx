@@ -1,3 +1,57 @@
+/**
+ * CharacterList Component
+ *
+ * The `CharacterList` component fetches and displays a list of characters with pagination, filtering, and loading states. It includes a search form with filters for name, status, gender, species, and type.
+ *
+ * This component:
+ * - Provides a form for searching and filtering characters based on various criteria.
+ * - Displays a grid of character cards, with loading skeletons shown while data is being fetched.
+ * - Handles pagination and updates the URL search parameters to reflect the current page and filters.
+ * - Includes error handling to reset filters and search parameters when fetching fails.
+ *
+ * State:
+ * - `page` (number): The current page of characters being displayed, managed via URL search parameters.
+ * - `name` (string): The name filter value.
+ * - `status` (string): The status filter value.
+ * - `gender` (string): The gender filter value.
+ * - `species` (string): The species filter value.
+ * - `type` (string): The type filter value.
+ * - `showSkeleton` (boolean): Indicates whether to show skeleton loaders while data is loading.
+ *
+ * Effects:
+ * - Updates the URL search parameters to reflect the current page and filters.
+ * - Scrolls to the top of the page when the page or filters change.
+ * - Fetches character data and updates the Redux store when the component mounts or filters/page change.
+ *
+ * Hooks:
+ * - `useGetCharactersQuery`: Fetches character data from an API based on current filters and page.
+ * - `useNavigate`: Provides a navigation function to navigate to character detail pages.
+ * - `useAppDispatch`: Provides a dispatch function to update the Redux store.
+ * - `useSearchParams`: Manages URL search parameters to control pagination and filters.
+ *
+ * Event Handlers:
+ * - `handleCardClick(id: number)`: Navigates to the character detail page when a character card is clicked.
+ * - `handleSearch(event: React.FormEvent)`: Handles form submission to apply filters and reset pagination.
+ * - `handleClear()`: Clears all filters, resets pagination, and refetches data.
+ *
+ * @component
+ *
+ * @returns {React.ReactElement} The rendered character list component with character cards, search form, and pagination.
+ *
+ * @example
+ * // Usage of the CharacterList component:
+ * // Import the CharacterList component and use it in your component where characters need to be displayed.
+ * import CharacterList from './CharacterList';
+ *
+ * // Use the CharacterList component.
+ * const MyComponent = () => {
+ *   return (
+ *     <div>
+ *       <CharacterList />
+ *     </div>
+ *   );
+ * };
+ */
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useGetCharactersQuery } from '../../services/characterApi';
