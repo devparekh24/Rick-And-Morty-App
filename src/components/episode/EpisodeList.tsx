@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Card, CardContent, Typography, Pagination } from '@mui/material';
 import { useGetEpisodesQuery } from '../../services/episodeApi';
 import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationSkeletonCard';
+import { useAppDispatch } from '../../hooks/hooks';
+import { fetchEpisodesSuccess } from '../../slices/episodeSlice';
 
 const EpisodeList: React.FC = () => {
 
     const [page, setPage] = useState(1);
     const [showSkeleton, setShowSkeleton] = useState(true);
-    const { data, error, isLoading, refetch } = useGetEpisodesQuery({ page });
+    const { data, error, isLoading, isSuccess, refetch } = useGetEpisodesQuery({ page });
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -18,6 +21,12 @@ const EpisodeList: React.FC = () => {
 
         return () => clearTimeout(timer);
     }, [page]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            dispatch(fetchEpisodesSuccess(data.results));
+        }
+    }, [isSuccess, data?.results, dispatch]);
 
     if (error) return <div>Error fetching episodes</div>;
 
