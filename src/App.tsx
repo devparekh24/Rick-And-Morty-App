@@ -25,10 +25,10 @@ const App: React.FC = () => {
         <Container>
           <Routes>
             <Route path="/" element={<CharacterList />} />
-            <Route path="/characters" element={<CharacterList />} />
-            <Route path="/episodes" element={<EpisodeList />} />
-            <Route path="/locations" element={<LocationList />} />
-            <Route path="/characters/:id" element={<CharacterDetail />} />
+            <Route path="/character" element={<CharacterList />} />
+            <Route path="/episode" element={<EpisodeList />} />
+            <Route path="/location" element={<LocationList />} />
+            <Route path="/character/:id" element={<CharacterDetail />} />
           </Routes>
         </Container>
       </Box>

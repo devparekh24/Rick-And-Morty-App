@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Typography, Card, CardContent, CardMedia, Grid } from '@mui/material';
 import { useGetCharacterByIdQuery } from '../../services/characterApi';
@@ -8,9 +8,31 @@ import CharacterDetailsSkeletonCard from '../skeleton/CharacterDetailsSkeletonCa
 
 const CharacterDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const { data, error, isLoading } = useGetCharacterByIdQuery(parseInt(id!));
+    const { data, error, isError, isLoading } = useGetCharacterByIdQuery(parseInt(id!));
     const [episodes, setEpisodes] = useState<Episode[]>([]);
     const [showSkeleton, setShowSkeleton] = useState(true);
+
+    const getCharacterDataById = useCallback(async () => {
+        try {
+            await data
+            if (isError) throw error;
+        } catch (error) {
+            console.log(error);
+        }
+    }, [data, isError, error]);
+
+    const getEpisodes = useCallback(async () => {
+        if (data) {
+            const episodePromises = data.episode.map((epUrl) => {
+                const episodeId = epUrl.split('/').pop();
+                return fetch(`https://rickandmortyapi.com/api/episode/${episodeId}`).then((res) => res.json());
+            });
+
+            const episodeData = await Promise.all(episodePromises);
+            setEpisodes(episodeData);
+            setShowSkeleton(false);
+        }
+    }, [data]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -22,20 +44,9 @@ const CharacterDetail: React.FC = () => {
     }, [data])
 
     useEffect(() => {
-        const fetchEpisodes = async () => {
-            if (data) {
-                const episodePromises = data.episode.map((epUrl) => {
-                    const episodeId = epUrl.split('/').pop();
-                    return fetch(`https://rickandmortyapi.com/api/episode/${episodeId}`).then((res) => res.json());
-                });
-
-                const episodeData = await Promise.all(episodePromises);
-                setEpisodes(episodeData);
-                setShowSkeleton(false);
-            }
-        };
-        fetchEpisodes();
-    }, [data]);
+        getCharacterDataById();
+        getEpisodes();
+    }, [getCharacterDataById, getEpisodes]);
 
     if (isLoading || showSkeleton) {
         return <CharacterDetailsSkeletonCard />;

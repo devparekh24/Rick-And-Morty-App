@@ -22,13 +22,13 @@ const NavBar: React.FC<{ darkMode: boolean; handleThemeChange: () => void; }> = 
                         <CloseIcon sx={{ fontSize: 32 }} />
                     </IconButton>
                 </ListItem>
-                <ListItem button component={NavLink} to="/characters">
+                <ListItem button component={NavLink} to="/character">
                     <ListItemText primary="Characters" />
                 </ListItem>
-                <ListItem button component={NavLink} to="/episodes">
+                <ListItem button component={NavLink} to="/episode">
                     <ListItemText primary="Episodes" />
                 </ListItem>
-                <ListItem button component={NavLink} to="/locations">
+                <ListItem button component={NavLink} to="/location">
                     <ListItemText primary="Locations" />
                 </ListItem>
             </List>
@@ -45,13 +45,13 @@ const NavBar: React.FC<{ darkMode: boolean; handleThemeChange: () => void; }> = 
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Rick and Morty
                     </Typography>
-                    <Button color="inherit" component={NavLink} to="/characters" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    <Button color="inherit" component={NavLink} to="/character" sx={{ display: { xs: 'none', sm: 'block' } }}>
                         Characters
                     </Button>
-                    <Button color="inherit" component={NavLink} to="/episodes" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    <Button color="inherit" component={NavLink} to="/episode" sx={{ display: { xs: 'none', sm: 'block' } }}>
                         Episodes
                     </Button>
-                    <Button color="inherit" component={NavLink} to="/locations" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    <Button color="inherit" component={NavLink} to="/location" sx={{ display: { xs: 'none', sm: 'block' } }}>
                         Locations
                     </Button>
                     <IconButton sx={{ ml: 1 }} onClick={handleThemeChange} color="inherit">
