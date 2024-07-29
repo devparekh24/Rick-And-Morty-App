@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Card, CardContent, Typography, Pagination } from '@mui/material';
 import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationSkeletonCard';
 import { useGetLocationsQuery } from '../../services/locationApi';
+import { fetchLocationsSuccess } from '../../slices/locationSlice';
+import { useAppDispatch } from '../../hooks/hooks';
 
 const LocationList: React.FC = () => {
 
     const [page, setPage] = useState(1);
     const [showSkeleton, setShowSkeleton] = useState(true);
-    const { data, error, isLoading, refetch } = useGetLocationsQuery({ page });
+    const { data, error, isLoading, isSuccess, refetch } = useGetLocationsQuery({ page });
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -18,6 +21,12 @@ const LocationList: React.FC = () => {
 
         return () => clearTimeout(timer);
     }, [page]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            dispatch(fetchLocationsSuccess(data.results));
+        }
+    }, [isSuccess, data?.results, dispatch]);
 
     if (error) return <div>Error fetching locations</div>;
 

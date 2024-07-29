@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useGetCharactersQuery } from '../../services/characterApi';
 import { Grid, Card, CardMedia, CardContent, Typography, Pagination, TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import CharacterSkeletonCard from '../skeleton/CharacterSkeletonCard';
+import { useAppDispatch } from '../../hooks/hooks';
+import { fetchCharactersSuccess } from '../../slices/characterSlice';
 
 const CharacterList: React.FC = () => {
 
@@ -14,8 +16,9 @@ const CharacterList: React.FC = () => {
     const [species, setSpecies] = useState(searchParams.get('species') || '');
     const [type, setType] = useState(searchParams.get('type') || '');
     const [showSkeleton, setShowSkeleton] = useState(true);
-    const { data, error, isLoading, refetch } = useGetCharactersQuery({ page, name, status, gender, species, type });
+    const { data, error, isLoading, isSuccess, refetch } = useGetCharactersQuery({ page, name, status, gender, species, type });
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -37,6 +40,12 @@ const CharacterList: React.FC = () => {
         if (type) params.set('type', type);
         setSearchParams(params);
     }, [page, name, status, gender, species, type, setSearchParams]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            dispatch(fetchCharactersSuccess(data.results));
+        }
+    }, [isSuccess, data?.results, dispatch]);
 
     const handleCardClick = (id: number) => {
         navigate(`/characters/${id}`);
