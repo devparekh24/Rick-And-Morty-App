@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Grid, Card, CardContent, Typography, Pagination } from '@mui/material';
-import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationSkeletonCard';
+import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationCard/EpisodeAndLocationSkeletonCard';
 import { useGetLocationsQuery } from '../../services/locationApi';
 import { fetchLocationsSuccess } from '../../slices/locationSlice';
 import { useAppDispatch } from '../../hooks/hooks';
@@ -46,15 +46,15 @@ const LocationList: React.FC = () => {
         }
     }, [isSuccess, data?.results, getLocationData, dispatch]);
 
-    if (error) return <div>Error fetching locations</div>;
+    if (error) return <div data-testid="error-message">Error fetching locations</div>;
 
     return (
         <>
-            <Grid container spacing={3} sx={{ marginTop: '64px' }}>
+            <Grid container spacing={3} sx={{ marginTop: '64px' }} data-testid="location-grid">
                 {isLoading || showSkeleton ? (<>
                     {Array.from(new Array(20)).map((_, index) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                            <EpisodeAndLocationSkeletonCard />
+                            <EpisodeAndLocationSkeletonCard data-testid={`skeleton-card-${index}`} />
                         </Grid>
                     ))}
                 </>
@@ -62,13 +62,13 @@ const LocationList: React.FC = () => {
                     <>
                         {data?.results.map((location) => (
                             <Grid item xs={12} sm={6} md={4} lg={3} key={location.id}>
-                                <Card sx={{ height: '100%' }}>
+                                <Card sx={{ height: '100%' }} data-testid={`location-card-${location.id}`}>
                                     <CardContent>
-                                        <Typography variant="h6">{location.name}</Typography>
-                                        <Typography variant="body2" color="textSecondary">
+                                        <Typography variant="h6" data-testid={`location-name-${location.id}`}>{location.name}</Typography>
+                                        <Typography variant="body2" color="textSecondary" data-testid={`location-type-${location.id}`}>
                                             {location.type}
                                         </Typography>
-                                        <Typography variant="body2" color="textSecondary">
+                                        <Typography variant="body2" color="textSecondary" data-testid={`location-dimension-${location.id}`}>
                                             {location.dimension}
                                         </Typography>
                                     </CardContent>
@@ -86,6 +86,7 @@ const LocationList: React.FC = () => {
                     refetch();
                 }}
                 sx={{ margin: 5, display: 'flex', justifyContent: 'center' }}
+                data-testid="pagination"
             />
         </>
     );

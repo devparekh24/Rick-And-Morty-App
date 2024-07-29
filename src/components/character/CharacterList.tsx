@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useGetCharactersQuery } from '../../services/characterApi';
 import { Grid, Card, CardMedia, CardContent, Typography, Pagination, TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import CharacterSkeletonCard from '../skeleton/CharacterSkeletonCard';
+import CharacterSkeletonCard from '../skeleton/CharacterCard/CharacterSkeletonCard';
 import { useAppDispatch } from '../../hooks/hooks';
 import { fetchCharactersSuccess } from '../../slices/characterSlice';
 
@@ -84,7 +84,7 @@ const CharacterList: React.FC = () => {
 
     return (
         <>
-            <form onSubmit={handleSearch}>
+            <form onSubmit={handleSearch} data-testid="search-form">
                 <Grid container spacing={2} sx={{ marginTop: '16px', marginBottom: '16px' }}>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
                         <TextField
@@ -93,6 +93,7 @@ const CharacterList: React.FC = () => {
                             fullWidth
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            inputProps={{ 'data-testid': 'name-input' }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -102,6 +103,7 @@ const CharacterList: React.FC = () => {
                                 value={status}
                                 onChange={(e) => setStatus(e.target.value)}
                                 label="Status"
+                                inputProps={{ 'data-testid': 'status-select' }}
                             >
                                 <MenuItem value="">Any</MenuItem>
                                 <MenuItem value="alive">Alive</MenuItem>
@@ -117,6 +119,7 @@ const CharacterList: React.FC = () => {
                                 value={gender}
                                 onChange={(e) => setGender(e.target.value)}
                                 label="Gender"
+                                inputProps={{ 'data-testid': 'gender-select' }}
                             >
                                 <MenuItem value="">Any</MenuItem>
                                 <MenuItem value="female">Female</MenuItem>
@@ -133,6 +136,7 @@ const CharacterList: React.FC = () => {
                             fullWidth
                             value={species}
                             onChange={(e) => setSpecies(e.target.value)}
+                            inputProps={{ 'data-testid': 'species-input' }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -142,10 +146,11 @@ const CharacterList: React.FC = () => {
                             fullWidth
                             value={type}
                             onChange={(e) => setType(e.target.value)}
+                            inputProps={{ 'data-testid': 'type-input' }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
-                        <Button variant="contained" fullWidth onClick={handleClear} sx={{ height: "100%" }}>
+                        <Button variant="contained" fullWidth onClick={handleClear} sx={{ height: "100%" }} data-testid="clear-button">
                             Clear
                         </Button>
                     </Grid>
@@ -156,7 +161,7 @@ const CharacterList: React.FC = () => {
                     {
                         Array.from(new Array(20)).map((_, index) => (
                             <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                <CharacterSkeletonCard />
+                                <CharacterSkeletonCard data-testid="character-skeleton-card" />
                             </Grid>
                         ))
                     }
@@ -164,17 +169,18 @@ const CharacterList: React.FC = () => {
                 ) : (
                     <>
                         {data?.results.map((character) => (
-                            <Grid item xs={12} sm={6} md={4} lg={3} key={character.id}>
+                            <Grid item xs={12} sm={6} md={4} lg={3} key={character.id} data-testid="character-card">
                                 <Card onClick={() => handleCardClick(character.id)}>
                                     <CardMedia
                                         component="img"
                                         height="300"
                                         image={character.image}
                                         alt={character.name}
+                                        data-testid="character-image"
                                     />
                                     <CardContent>
-                                        <Typography variant="h6">{character.name}</Typography>
-                                        <Typography variant="body2" color="textSecondary">
+                                        <Typography variant="h6" data-testid="character-name">{character.name}</Typography>
+                                        <Typography variant="body2" color="textSecondary" data-testid="character-species">
                                             {character.species}
                                         </Typography>
                                     </CardContent>
@@ -192,6 +198,7 @@ const CharacterList: React.FC = () => {
                     refetch();
                 }}
                 sx={{ margin: 5, display: 'flex', justifyContent: 'center' }}
+                data-testid="pagination"
             />
         </>
     );

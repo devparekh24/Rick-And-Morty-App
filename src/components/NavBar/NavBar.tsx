@@ -18,7 +18,7 @@ const NavBar: React.FC<{ darkMode: boolean; handleThemeChange: () => void; }> = 
         <Box sx={{ width: 180 }}>
             <List>
                 <ListItem>
-                    <IconButton onClick={handleDrawerToggle} sx={{ marginLeft: 'auto' }}>
+                    <IconButton onClick={handleDrawerToggle} sx={{ marginLeft: 'auto' }} aria-label="close">
                         <CloseIcon sx={{ fontSize: 32 }} />
                     </IconButton>
                 </ListItem>
@@ -54,7 +54,7 @@ const NavBar: React.FC<{ darkMode: boolean; handleThemeChange: () => void; }> = 
                     <Button color="inherit" component={NavLink} to="/location" sx={{ display: { xs: 'none', sm: 'block' } }}>
                         Locations
                     </Button>
-                    <IconButton sx={{ ml: 1 }} onClick={handleThemeChange} color="inherit">
+                    <IconButton sx={{ ml: 1 }} onClick={handleThemeChange} color="inherit" aria-label="toggle theme">
                         {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
                     </IconButton>
                 </Toolbar>

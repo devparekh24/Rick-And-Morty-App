@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Grid, Card, CardContent, Typography, Pagination } from '@mui/material';
 import { useGetEpisodesQuery } from '../../services/episodeApi';
-import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationSkeletonCard';
+import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationCard/EpisodeAndLocationSkeletonCard';
 import { useAppDispatch } from '../../hooks/hooks';
 import { fetchEpisodesSuccess } from '../../slices/episodeSlice';
 import { useSearchParams } from 'react-router-dom';
@@ -46,16 +46,16 @@ const EpisodeList: React.FC = () => {
         }
     }, [isSuccess, data?.results, getEpisodeData, dispatch]);
 
-    if (error) return <div>Error fetching episodes</div>;
+    if (error) return <div data-testid="error-message">Error fetching episodes</div>;
 
     return (
         <>
-            <Grid container spacing={3} sx={{ marginTop: '64px' }}>
+            <Grid container spacing={3} sx={{ marginTop: '64px' }} data-testid="episode-grid">
                 {isLoading || showSkeleton ? (<>
                     {
                         Array.from(new Array(20)).map((_, index) => (
                             <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                <EpisodeAndLocationSkeletonCard />
+                                <EpisodeAndLocationSkeletonCard data-testid={`skeleton-card-${index}`} />
                             </Grid>
                         ))
                     }
@@ -64,13 +64,13 @@ const EpisodeList: React.FC = () => {
                     <>
                         {data?.results.map((episode) => (
                             <Grid item xs={12} sm={6} md={4} lg={3} key={episode.id}>
-                                <Card sx={{ height: '100%' }}>
+                                <Card sx={{ height: '100%' }} data-testid={`episode-card-${episode.id}`}>
                                     <CardContent>
-                                        <Typography variant="h6">{episode.name}</Typography>
-                                        <Typography variant="body2" color="textSecondary">
+                                        <Typography variant="h6" data-testid={`episode-name-${episode.id}`}>{episode.name}</Typography>
+                                        <Typography variant="body2" color="textSecondary" data-testid={`episode-episode-${episode.id}`}>
                                             {episode.episode}
                                         </Typography>
-                                        <Typography variant="body2" color="textSecondary">
+                                        <Typography variant="body2" color="textSecondary" data-testid={`episode-air-date-${episode.id}`}>
                                             {episode.air_date}
                                         </Typography>
                                     </CardContent>
@@ -88,6 +88,7 @@ const EpisodeList: React.FC = () => {
                     refetch();
                 }}
                 sx={{ margin: 5, display: 'flex', justifyContent: 'center' }}
+                data-testid="pagination"
             />
         </>
     );
