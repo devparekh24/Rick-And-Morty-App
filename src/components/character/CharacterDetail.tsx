@@ -1,3 +1,51 @@
+/**
+ * CharacterDetail Component
+ *
+ * The `CharacterDetail` component fetches and displays detailed information about a single character, including their image, name, status, species, gender, origin, location, and creation date. It also fetches and displays a list of episodes in which the character appeared.
+ *
+ * This component:
+ * - Fetches character details and episodes based on the character ID from the URL parameters.
+ * - Displays a skeleton loading state while data is being fetched.
+ * - Handles errors and loading states gracefully.
+ * - Provides detailed information about the character and a list of episodes.
+ *
+ * State:
+ * - `episodes` (Episode[]): An array of episodes in which the character appeared.
+ * - `showSkeleton` (boolean): Indicates whether to show skeleton loaders while data is loading.
+ *
+ * Effects:
+ * - Scrolls to the top of the page when the component mounts or data changes.
+ * - Fetches character details and episode data when the component mounts or the character ID changes.
+ *
+ * Hooks:
+ * - `useParams`: Extracts the character ID from the URL parameters.
+ * - `useGetCharacterByIdQuery`: Fetches character data by ID from the API.
+ * - `useState`: Manages local state for episodes and loading state.
+ * - `useEffect`: Handles side effects for data fetching and skeleton display.
+ * - `useCallback`: Memoizes functions to avoid unnecessary re-renders.
+ *
+ * Event Handlers:
+ * - `getCharacterDataById()`: Fetches character data and handles errors.
+ * - `getEpisodes()`: Fetches episode data and updates the state.
+ *
+ * @component
+ *
+ * @returns {React.ReactElement} The rendered character detail component with character information and episodes list.
+ *
+ * @example
+ * // Usage of the CharacterDetail component:
+ * // Import the CharacterDetail component and use it in a route to display details of a specific character.
+ * import CharacterDetail from './CharacterDetail';
+ *
+ * // Use the CharacterDetail component within a Router setup.
+ * const MyApp = () => {
+ *   return (
+ *     <Routes>
+ *       <Route path="/character/:id" element={<CharacterDetail />} />
+ *     </Routes>
+ *   );
+ * };
+ */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Typography, Card, CardContent, CardMedia, Grid } from '@mui/material';

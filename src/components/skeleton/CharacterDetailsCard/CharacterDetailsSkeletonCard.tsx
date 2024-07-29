@@ -1,3 +1,32 @@
+/**
+ * CharacterDetailsSkeletonCard Component
+ *
+ * The `CharacterDetailsSkeletonCard` component provides a skeleton placeholder for loading states in the character details view. It uses Material-UI's `Skeleton` component to render placeholders for various parts of the character details card.
+ *
+ * This component is designed to be displayed while data is being fetched, giving users a visual indication that content is loading.
+ *
+ * Layout:
+ * - A rectangular skeleton for an image.
+ * - Skeletons for title, subtitles, details, and footer, displayed within a card layout.
+ *
+ * @component
+ *
+ * @returns {React.ReactElement} The rendered skeleton card component with placeholders for character details.
+ *
+ * @example
+ * // Usage of the CharacterDetailsSkeletonCard component:
+ * // Import the CharacterDetailsSkeletonCard component and use it in your component where character details are being fetched.
+ * import CharacterDetailsSkeletonCard from './CharacterDetailsSkeletonCard';
+ *
+ * // Use the CharacterDetailsSkeletonCard component.
+ * const MyComponent = () => {
+ *   return (
+ *     <div>
+ *       <CharacterDetailsSkeletonCard />
+ *     </div>
+ *   );
+ * };
+ */
 import React from 'react';
 import { Card, CardContent, Skeleton, Grid, Typography } from '@mui/material';
 

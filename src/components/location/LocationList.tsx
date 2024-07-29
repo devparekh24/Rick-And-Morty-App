@@ -1,3 +1,45 @@
+/**
+ * LocationList Component
+ *
+ * The `LocationList` component fetches and displays a list of locations with pagination and loading states. It utilizes Material-UI's `Grid`, `Card`, and `Pagination` components to render the UI. 
+ * It includes:
+ * - A grid layout to display location cards.
+ * - Skeleton loaders displayed while data is being fetched.
+ * - Pagination controls to navigate through different pages of locations.
+ * - Error handling to display a message if the data fetch fails.
+ *
+ * State:
+ * - `page` (number): The current page of locations being displayed, controlled via URL search parameters.
+ * - `showSkeleton` (boolean): Indicates whether to show skeleton loaders while data is loading.
+ *
+ * Effects:
+ * - Updates the page number in URL search parameters when the page changes.
+ * - Fetches location data and updates the Redux store when the component mounts or page changes.
+ * - Smoothly scrolls to the top of the page when the page changes.
+ *
+ * Hooks:
+ * - `useGetLocationsQuery`: Fetches location data from an API based on the current page.
+ * - `useAppDispatch`: Provides a dispatch function to update the Redux store.
+ * - `useSearchParams`: Manages URL search parameters to control pagination.
+ *
+ * @component
+ *
+ * @returns {React.ReactElement} The rendered location list component with location cards, pagination, and loading skeletons.
+ *
+ * @example
+ * // Usage of the LocationList component:
+ * // Import the LocationList component and use it in your component where locations need to be displayed.
+ * import LocationList from './LocationList';
+ *
+ * // Use the LocationList component.
+ * const MyComponent = () => {
+ *   return (
+ *     <div>
+ *       <LocationList />
+ *     </div>
+ *   );
+ * };
+ */
 import React, { useState, useEffect, useCallback } from 'react';
 import { Grid, Card, CardContent, Typography, Pagination } from '@mui/material';
 import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationCard/EpisodeAndLocationSkeletonCard';

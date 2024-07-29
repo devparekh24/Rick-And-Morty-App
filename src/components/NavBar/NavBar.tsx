@@ -1,3 +1,49 @@
+/**
+ * NavBar Component
+ *
+ * The `NavBar` component provides a responsive navigation bar with theme toggle functionality. It includes:
+ * - An `AppBar` with a title, navigation links, and a theme toggle button.
+ * - A `Drawer` for mobile view that contains navigation links and can be opened and closed with a menu button.
+ * - The ability to toggle between light and dark themes.
+ *
+ * Props:
+ * - `darkMode` (boolean): Indicates whether the application is in dark mode.
+ * - `handleThemeChange` (function): A callback function to toggle the theme between light and dark modes.
+ *
+ * State:
+ * - `drawerOpen` (boolean): Manages the open/closed state of the mobile navigation drawer.
+ *
+ * Methods:
+ * - `handleDrawerToggle`: Toggles the `drawerOpen` state to open or close the drawer.
+ *
+ * @component
+ *
+ * @param {Object} props - The component's props.
+ * @param {boolean} props.darkMode - The current theme mode (light or dark).
+ * @param {function} props.handleThemeChange - Function to toggle between light and dark mode.
+ *
+ * @returns {React.ReactElement} The rendered navigation bar component with app bar and drawer.
+ *
+ * @example
+ * // Usage of the NavBar component:
+ * // Import the NavBar component and use it in your main application component.
+ * import NavBar from './NavBar';
+ *
+ * // Use the NavBar component.
+ * const App = () => {
+ *   const [darkMode, setDarkMode] = React.useState(false);
+ *
+ *   const handleThemeChange = () => {
+ *     setDarkMode(!darkMode);
+ *   };
+ *
+ *   return (
+ *     <div>
+ *       <NavBar darkMode={darkMode} handleThemeChange={handleThemeChange} />
+ *     </div >
+ *   );
+ * };
+ */
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, ListItemText, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
