@@ -20,6 +20,9 @@ export const characterApi = createApi({
             providesTags: ['Character']
         }),
     }),
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: true,
 });
 
 export const { useGetCharactersQuery, useGetCharacterByIdQuery } = characterApi;
