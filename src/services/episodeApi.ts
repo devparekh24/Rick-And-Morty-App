@@ -9,7 +9,10 @@ export const episodeApi = createApi({
     tagTypes: ['Episode'],
     endpoints: (builder) => ({
         getEpisodes: builder.query<EpisodesResponse, { page: number }>({
-            query: ({ page }) => `episode?page=${page}`,
+            query: ({ page }) => ({
+                url: `episode`,
+                params: { page }
+            }),
             providesTags: ['Episode']
         }),
         getEpisodeById: builder.query<Episode, number>({
