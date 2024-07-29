@@ -9,7 +9,10 @@ export const locationApi = createApi({
     tagTypes: ['Location'],
     endpoints: (builder) => ({
         getLocations: builder.query<LocationsResponse, { page: number }>({
-            query: ({ page }) => `location?page=${page}`,
+            query: ({ page }) => ({
+                url: `location`,
+                params: { page }
+            }),
             providesTags: ['Location']
         }),
         getLocationById: builder.query<Location, number>({

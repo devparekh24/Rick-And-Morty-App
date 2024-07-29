@@ -4,10 +4,12 @@ import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationSkelet
 import { useGetLocationsQuery } from '../../services/locationApi';
 import { fetchLocationsSuccess } from '../../slices/locationSlice';
 import { useAppDispatch } from '../../hooks/hooks';
+import { useSearchParams } from 'react-router-dom';
 
 const LocationList: React.FC = () => {
 
-    const [page, setPage] = useState(1);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
     const [showSkeleton, setShowSkeleton] = useState(true);
     const { data, error, isError, isLoading, isSuccess, refetch } = useGetLocationsQuery({ page });
     const dispatch = useAppDispatch();
@@ -30,6 +32,12 @@ const LocationList: React.FC = () => {
 
         return () => clearTimeout(timer);
     }, [page]);
+
+    useEffect(() => {
+        const params = new URLSearchParams();
+        if (page) params.set('page', String(page));
+        setSearchParams(params);
+    }, [page, setSearchParams]);
 
     useEffect(() => {
         getLocationData();
