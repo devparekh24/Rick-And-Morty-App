@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useGetCharactersQuery } from '../../services/characterApi';
 import { Grid, Card, CardMedia, CardContent, Typography, Pagination, TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
@@ -16,9 +16,18 @@ const CharacterList: React.FC = () => {
     const [species, setSpecies] = useState(searchParams.get('species') || '');
     const [type, setType] = useState(searchParams.get('type') || '');
     const [showSkeleton, setShowSkeleton] = useState(true);
-    const { data, error, isLoading, isSuccess, refetch } = useGetCharactersQuery({ page, name, status, gender, species, type });
+    const { data, error, isError, isLoading, isSuccess, refetch } = useGetCharactersQuery({ page, name, status, gender, species, type });
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+
+    const getCharacterData = useCallback(async () => {
+        try {
+            await data
+            if (isError) throw error;
+        } catch (error) {
+            console.log(error);
+        }
+    }, [data, isError, error]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -42,13 +51,14 @@ const CharacterList: React.FC = () => {
     }, [page, name, status, gender, species, type, setSearchParams]);
 
     useEffect(() => {
+        getCharacterData();
         if (isSuccess) {
             dispatch(fetchCharactersSuccess(data.results));
         }
-    }, [isSuccess, data?.results, dispatch]);
+    }, [isSuccess, data?.results, dispatch, getCharacterData]);
 
     const handleCardClick = (id: number) => {
-        navigate(`/characters/${id}`);
+        navigate(`/character/${id}`);
     };
 
     const handleSearch = (event: React.FormEvent) => {

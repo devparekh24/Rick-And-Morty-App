@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Grid, Card, CardContent, Typography, Pagination } from '@mui/material';
 import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationSkeletonCard';
 import { useGetLocationsQuery } from '../../services/locationApi';
@@ -9,8 +9,17 @@ const LocationList: React.FC = () => {
 
     const [page, setPage] = useState(1);
     const [showSkeleton, setShowSkeleton] = useState(true);
-    const { data, error, isLoading, isSuccess, refetch } = useGetLocationsQuery({ page });
+    const { data, error, isError, isLoading, isSuccess, refetch } = useGetLocationsQuery({ page });
     const dispatch = useAppDispatch();
+
+    const getLocationData = useCallback(async () => {
+        try {
+            await data
+            if (isError) throw error;
+        } catch (error) {
+            console.log(error);
+        }
+    }, [data, isError, error]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -23,10 +32,11 @@ const LocationList: React.FC = () => {
     }, [page]);
 
     useEffect(() => {
+        getLocationData();
         if (isSuccess) {
             dispatch(fetchLocationsSuccess(data.results));
         }
-    }, [isSuccess, data?.results, dispatch]);
+    }, [isSuccess, data?.results, getLocationData, dispatch]);
 
     if (error) return <div>Error fetching locations</div>;
 

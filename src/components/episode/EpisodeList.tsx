@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Grid, Card, CardContent, Typography, Pagination } from '@mui/material';
 import { useGetEpisodesQuery } from '../../services/episodeApi';
 import EpisodeAndLocationSkeletonCard from '../skeleton/EpisodeAndLocationSkeletonCard';
@@ -9,8 +9,17 @@ const EpisodeList: React.FC = () => {
 
     const [page, setPage] = useState(1);
     const [showSkeleton, setShowSkeleton] = useState(true);
-    const { data, error, isLoading, isSuccess, refetch } = useGetEpisodesQuery({ page });
+    const { data, error, isError, isLoading, isSuccess, refetch } = useGetEpisodesQuery({ page });
     const dispatch = useAppDispatch();
+
+    const getEpisodeData = useCallback(async () => {
+        try {
+            await data
+            if (isError) throw error;
+        } catch (error) {
+            console.log(error);
+        }
+    }, [data, isError, error]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -23,10 +32,11 @@ const EpisodeList: React.FC = () => {
     }, [page]);
 
     useEffect(() => {
+        getEpisodeData();
         if (isSuccess) {
             dispatch(fetchEpisodesSuccess(data.results));
         }
-    }, [isSuccess, data?.results, dispatch]);
+    }, [isSuccess, data?.results, getEpisodeData, dispatch]);
 
     if (error) return <div>Error fetching episodes</div>;
 
