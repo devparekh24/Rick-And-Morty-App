@@ -10,13 +10,16 @@ export const locationApi = createApi({
     endpoints: (builder) => ({
         getLocations: builder.query<LocationsResponse, { page: number }>({
             query: ({ page }) => `location?page=${page}`,
-            providesTags:['Location']
+            providesTags: ['Location']
         }),
         getLocationById: builder.query<Location, number>({
             query: (id) => `location/${id}`,
             providesTags: ['Location']
         }),
     }),
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: true,
 });
 
 export const { useGetLocationsQuery, useGetLocationByIdQuery } = locationApi;

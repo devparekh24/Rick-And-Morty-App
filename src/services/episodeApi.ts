@@ -17,6 +17,9 @@ export const episodeApi = createApi({
             providesTags: ['Episode']
         }),
     }),
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: true,
 });
 
 export const { useGetEpisodesQuery, useGetEpisodeByIdQuery } = episodeApi;
